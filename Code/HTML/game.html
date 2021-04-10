@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+    <head>
+    <meta name="menu" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>--AGC--</title>
+	<link rel="stylesheet" href="css/chessboard-1.0.0.css">
+	<link rel="stylesheet" href="css/game.css">
+	<link rel="stylesheet" href="css/chat.css">
+	<link rel="stylesheet" href="css/parametres.css">
+    </head>
+    <body>
+	<div id="maskey" class="winSetting" style="display:none">
+	    <div id="s1" class="setting">
+		<p class="setting">
+		    <input id="toggle1" class="toggle-control" type="checkbox" onclick="dbConf()" checked>
+		    <label for ="toggle1"></label>
+		</p>
+		<p class="indice">Double confirmation</p>
+	    </div>
+	    <div id="s2" class="setting">
+		<p class="setting">
+		    <input id="toggle2" class="toggle-control" type="checkbox">
+		    <label for ="toggle2"></label>
+		    <p class="indice">Commande Vocale</p>
+	    </div>
+	    <div id="s3" class="setting">
+		<p class="setting">
+		    <input id="toggle3" class="toggle-control" type="checkbox" onclick="sonMessage()" checked>
+		    <label for ="toggle3"></label>
+		</p>
+		<p class="indice">Son Message</p>
+    <p class="setting">
+		    <input id="theme" type="button" name="coucou" value="Thème Assez Gros Chess" onclick="swicthStyle()">
+		</p>
+      </div>
+	</div>
+    	<nav class="parametre">
+            <input  type="image" src="img/Logo/roue.png" alt="img/Logo/roue2.png" name="Submit" value="Envoyer" id="para1" class="para"  title="paramètres" onclick="masquer_div('maskey');">
+            <br /><input  type="image" src="img/Logo/loupe.png"  name="Submit" value="Envoyer" id="para2" class="para" title="activer/désactiver grossissement" onclick="zoom()">
+            <br /><input  type="image" src="img/Logo/micro.png" alt="img/Logo/micro2.png" name="Submit" value="Envoyer" class="para"    title="Appuyez pour parler" onclick="reconnaissanceVocale()">
+		</nav>
+
+
+	<div id="myBoard"></div>
+	<nav id="menu">
+	    <img src="img/Logo/AGC-logo.png" alt="">
+	    <!-- <li onclick="document.location='index.html'">Accueil</li>
+		 <li onclick="document.location='../Accueil'">Tuto</li> -->
+	    <section id="credits">
+		<h3>réalisé par le groupe AGC</h3>
+		<img src="img/Logo/fds.png" alt="">
+		<img src="img/Logo/um.png" alt="">
+	    </section>
+
+	</nav>
+
+	<div id="Update2" class="Update">
+	    <div id="chat_zone">
+	    	<!-- message du chat ici-->
+	    </div>
+	    <form method="post" action="/test" id="form_chat">
+		<input type="text" name="chat" id="chat" autocomplete="off" placeholder="@message ou jouer un coup...">
+		<button type="submit" name="button">envoyer</button>
+	    </form>
+	</div>
+
+	<script src="js/jquery.js"></script>
+	<script src="js/chessboard.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="js/networkController.js"></script>
+	<script src="js/gameController.js"></script>
+	<script src="js/chatController.js"></script>
+	<script type="text/javascript">
+
+        //Script pour les boutons et animations
+
+        let lectureMessage = true;
+
+        function sonMessage(){
+            lectureMessage = !lectureMessage;
+        }
+
+         function masquer_div(id){
+
+            if (document.getElementById(id).style.display == 'none')
+				document.getElementById(id).style.display = 'block';
+            else
+		 		document.getElementById(id).style.display = 'none';
+         }
+
+
+         let zoomB = true;
+         function zoom(){
+         	zoomB = !zoomB;
+          if(zoomB){
+            $('#para2').css('border','solid black 5px');
+            $('#para2').css('border-radius','70px');
+            $('#para2').css('background-color','#58E507');
+          }else{
+	         	$('#para2').css('border','solid black 3px');
+            $('#para2').css('border-radius','0px');
+            $('#para2').css('background-color','#fff7dd');
+         }
+       }
+
+         $('#Update2').mouseover(function(){
+         	if(zoomB){
+	         	$(this).css('transform', 'scale(1.3 , 1.3)');
+    	     	$(this).css('transform-origin', 'bottom right');
+    	     }
+         });
+
+         $('#Update2').mouseout(function(){
+         	$(this).css('transform', 'scale(1 , 1)');
+         });
+
+         $('#maskey').mouseover(function(){
+         	if(zoomB){
+	         	$(this).css('transform', 'scale(1.3 , 1.3)');
+    	     	$(this).css('transform-origin', 'top right');
+    	     }
+         });
+
+         $('#maskey').mouseout(function(){
+         	$(this).css('transform', 'scale(1 , 1)');
+         });
+
+         $('.para').mouseover(function(){
+         	if(zoomB){
+	         	$(this).css('transform', 'scale(1.2 , 1.2)');
+    	     }
+         });
+
+         $('.para').mouseout(function(){
+         	$(this).css('transform', 'scale(1 , 1)');
+         });
+
+         let dbC = true;
+         function dbConf(){
+         	dbC = !dbC;
+         	socket.emit('chat', (dbC) ? '/confirmation on' : '/confirmation off');
+         }
+
+        let nTheme = 0;
+        let whiteCaseColor = '#fff7dd';
+        let blackCaseColor = '#8d8363';
+        let whiteSquareGrey = '#a9a9a9';
+        let blackSquareGrey = '#696969';
+
+        function swicthStyle(){ //a rajouter, changer la couleur de surlignement sélection et contour échiquier
+            if(nTheme == 0){
+                whiteCaseColor = 'red';
+                blackCaseColor = '#F9D405';
+                $('#theme').val("Thème Contrastes");
+                 nTheme++;
+            }else if (nTheme == 1) {
+                whiteCaseColor = '#FFBF86';
+                blackCaseColor = '#813E04';
+                $('#theme').val("Thème Classique");
+                nTheme++;
+            }else if (nTheme == 2) {
+                whiteCaseColor = '#fff7dd';
+                blackCaseColor = '#8d8363';
+                $('#theme').val("Thème Assez Gros Chess");
+                nTheme=0;
+            }
+            $('.white-1e1d7').css('background-color',whiteCaseColor);
+            $('.black-3c85d').css('background-color',blackCaseColor);
+        }
+
+        //Commande vocale
+
+        var recognition = new webkitSpeechRecognition();
+        recognition.lang = 'fr';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        function reconnaissanceVocale(){
+            recognition.start();
+            console.log('listening....');
+        }
+
+        recognition.onresult = function(event) {
+            let msg = event.results[0][0].transcript
+            console.log(msg);
+            $('#chat_zone').append('<p class="emis">'+msg+'</p>');
+            socket.emit('chat', msg);
+        }
+
+	</script>
+
+    </body>

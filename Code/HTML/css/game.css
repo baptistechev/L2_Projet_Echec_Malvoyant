@@ -1,0 +1,70 @@
+html, body {
+ margin: 0;
+ padding: 0;
+ cursor: url(../img/big_curseur.png), pointer;
+ overflow: hidden;
+ }
+body{
+  background-color: #8d8363;
+  font-family: Arial, sans-serif;
+}
+
+#myBoard{
+  width: 44%;
+  margin-left: 8%;
+  margin-top: 2%;
+  position: absolute;
+  top: 0px;
+  left: 13%;
+  border: #fff7dd;
+  z-index: 1;
+}
+
+#menu{
+  width: 13%;
+  height: 98%;
+  background-color: #fff7dd;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  padding: 10px;
+  border: 2px solid;
+  text-align: center;
+}
+#menu img{
+  width: 100%;
+  border: 1px solid black/*#E9C081*/;
+  border-radius: 90px;
+}
+#credits{
+  bottom: 5%;
+  position: absolute;
+  width: 90%;
+  height: 20%;
+}
+
+#credits h3{
+  font-size: 80%;
+}
+
+#credits img{
+  width: 40%;
+  height: 45%;
+  display: inline-block;
+  border-radius: 0px;
+  border: none;
+}
+
+.parametre
+{
+  position: absolute;
+  top: 0px;
+  right:  0px;
+}
+
+@media (max-width: 1300px) {
+  #menu{
+    display: none;
+    }
+
+  }

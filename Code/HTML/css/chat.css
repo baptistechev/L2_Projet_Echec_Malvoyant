@@ -1,0 +1,75 @@
+
+#chat_zone{
+  background-color: #fff7dd;
+  overflow: auto;
+  height: 83%; /*ne change rien peut etre la cause d un probleme a voir*/
+  width: 100%;
+  padding: 5px;
+  border-bottom: solid black 2px;
+}
+
+#chat_zone .console{
+  background-color: red;
+  border: solid black 1px;
+  border-radius: 8px;
+  padding: 8px;
+  width: 40%;
+  color: white;
+}
+#chat_zone .recu{
+  background-color: white;
+  border: solid black 1px;
+  border-radius: 8px;
+  padding: 8px;
+  width: 40%;
+}
+#chat_zone .emis{
+  background-color: skyblue;
+  border: solid black 1px;
+  border-radius: 8px;
+  padding: 8px;
+  width: 40%;
+  margin-left: 50%;
+}
+
+.Update{
+  position: absolute;
+  right: 0px;
+  bottom: 4%;
+  border: 2px solid black;
+  height: 50%;
+  width: 40%;
+  background-color: #fff7dd;
+  z-index: 2;
+}
+
+.Update input{
+  width: 80%;
+  height: 30px;
+}
+
+form{
+  position: absolute;
+  padding: 5px;
+  bottom: 0px;
+  width: 98%;
+}
+.Update button{
+  padding: 2px;
+  display: inline-block;
+  width: 15%;
+  height: 30px;
+  background-color: white;
+  border: solid grey 1px;
+  border-radius: 5px;
+}
+@media (max-width: 1800px) { 
+  .Update{
+    width: 32%;
+  }
+}
+
+/* Zoom chat */
+/*#Update2:hover{
+  
+}*/

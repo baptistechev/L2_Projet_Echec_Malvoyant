@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>AssezGrosChess</title>
+    <link rel="stylesheet" href="css/index.css">
+  </head>
+
+  <body id="Body" style="zoom: 100%">
+    <div class="index">
+      <p>Bienvenue sur Assez Gros Chess</p>
+      <li class="bouton" onclick="colorB()">Blanc</li>
+      <li class="bouton" onclick="colorN()">Noir</li>
+
+      <li class="bouton" onclick="colorA()">aléatoire</li>
+      <div class="">
+        <input id="url" type="text" name="urlsender" value="" placeholder="Chemin vers la partie">
+        <li id="button" onclick="copy()">Copier</li>
+      </div>
+      <img src="img/Logo/AGC-logo.png" alt="">
+    </div>
+<!-- ////////////////////////////ICI COMMENCENT LES SETTINGS ///////-->
+<div class="Settings">
+    <h3>Paramètres</h3>
+  <!-- À voir si pas trop galère
+  <div id="Thèmes">
+    Thèmes :
+    <button id="IDmonButton" class="etat1"> -1- </button>
+  </div>-->
+  <div id="Zoom">
+    Zoom :
+    <button type="button" name="ZoomPageOut" onclick="zoomPageOut()"> - </button>
+    <button type="button" name="ZoomPageIn" onclick="zoomPageIn()"> + </button>
+  </div>
+  <!-- À voir si utile
+  <div id="Couleurs">
+    Couleurs :
+    <input type="color" name="choixCouleur" value="#ec0d1a">
+  </div>-->
+  </div>
+  <script type="text/javascript">
+    //Script paramètres
+
+    //Zoom
+    function zoomPageIn(){
+        var Page = document.getElementById('Body');
+        var zoom = parseInt(Page.style.zoom) + 10 +'%';
+        if(parseInt(Page.style.zoom) <= 120)
+          Page.style.zoom = zoom;
+        return false;
+      }
+      function zoomPageOut(){
+        var Page = document.getElementById('Body');
+        var zoom = parseInt(Page.style.zoom) - 10 +'%';
+        if(parseInt(Page.style.zoom) > 70)
+          Page.style.zoom = zoom;
+        return false;
+      }
+
+      //Début Pour changer de style... à revoir
+
+      var monButton = document.getElementById("IDmonButton");
+
+      monButton.addEventListener("click", function() {
+
+        if (monButton.classList.contains("etat1")) {
+          monButton.classList.remove("etat1");
+          monButton.classList.add("etat2");
+          // cette ligne c'est en plus pour changer le texte...
+          monButton.textContent = " -2- "
+
+        } else if (monButton.classList.contains("etat2")) {
+          monButton.classList.remove("etat2");
+          monButton.classList.add("etat1");
+          // cette ligne c'est en plus pour changer le texte...
+          monButton.textContent = " -1- "
+        }
+      });
+
+    </script>
+
+
+<!-- //////////////////////////// ET ICI ILS FINISSENT ///////////-->
+
+    <script src="js/jquery.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        var socket = io.connect('http://localhost:8080');
+
+        function colorB(){
+          socket.emit('couleur','w');
+          document.getElementById("url").defaultValue = "http://localhost:8080/game";
+        }
+
+        function colorN(){
+          socket.emit('couleur','b');
+          document.getElementById("url").defaultValue = "http://localhost:8080/game";
+        }
+
+        function colorA(){
+          if(Math.floor(Math.random()*2) == 0)
+            socket.emit('couleur','w');
+          else
+            socket.emit('couleur','b');
+          document.getElementById("url").defaultValue = "http://localhost:8080/game";
+        }
+
+        $('.bouton').click(function(){
+            $('li').css('background-color','rgb(255,215,83)');
+            $(this).css('background-color','rgb(18,255,0)');
+        });
+
+        function copy(){
+          if($('#url').val() != ''){
+            var cp = document.getElementById('url');
+            cp.select();
+            cp.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+
+            socket.emit('status');
+
+            window.location.replace("http://localhost:8080/game");
+          }
+        }
+
+    </script>
+
+  </body>
+<!--Voir si accepté par les autres :p -->
+  <footer>
+    <div class="">
+      <!-- <marquee behavior="slide"> Obsolète sur de nombreux navigateurs...
+      déso c'était pour le fun -->
+      <a href="pageAide?">Aide</a>
+      <a href="pageRemerciements?">Remerciements</a>
+      <a href="pagePourNous?">L'Équipe</a>
+    <!--</marquee>-->
+    </div>
+  </footer>
+
+</html>
